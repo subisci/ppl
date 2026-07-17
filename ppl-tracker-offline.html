@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<title>Push / Pull / Legs</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PPL Tracker">
+<meta name="theme-color" content="#1C1B1A">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAFhklEQVR4nO3dMXLkVBSGUdlFygZmZg0UATshYSEkBEQEJCyEhJ0QUKzB9gZYwBBMacrT092WWnrvXfV/TuyybnA/Palnyv0wFfPh/buPo2egnafnl4fRM7w2dBjLzjSNjaL7hS091/SOodvFLD5r9Aqh+UUsPlu0DqHZL7f47KlVCLv/UotPS3uH8LjnL7P8tLb3ju1Sk8VnhD1Og80ngOVnlD12b1MAlp/Rtu7gzQFYfqrYsos3BWD5qebWnVwdgOWnqlt2c1UAlp/q1u7o4gAsP0exZlcXBWD5OZqlO/tmAJafo1qyu7v+Vwg4mqsBuPtzdG/t8MUALD/34touewQi2tkA3P25N5d22glAtK8CcPfnXp3bbScA0b4IwN2fe3e6404Aon0OwN2fFK933QlANAEQ7XGaPP6QZ955JwDRBEA0ARBNAER78AJMMicA0QRANAEQTQBEEwDRBEA0ARBNAEQTANEEQDQBEE0ARBMA0QRANAEQTQBEEwDRBEA0ARBNAEQTANEEQDQBEE0ARBMA0QRANAEQTQBEEwDRBEA0ARBNAEQTANEEQDQBEE0ARBMA0b4ZPcASf//0/aKf++HPf5rOsdV3v/286Of+/fWPxpNs89fv3y76uR9/+a/xJNuV/ZrUpUt/SZUYli79JVViWLr0l1SNoVwAWxf/1KgQti7+qVEhbF38U9VCKBPA3ot/qlcIey/+qV4h7L34p6qEUOIluPXy97pG6+XvdY3Wy9/rGksMD6DHYva4Vo/F7HGtnotZIYKhAfRc/pbX7Ln8La85YiFHRzAsgBHL3+LaI5a/xbVHLuLIaw8JYOTy7znDyOXfc4bRd+GRM3QPoMLyz7bMUmH5Z1tmqbD8sxGzdA2g0vLPbpmp0vLPbpmp0vLPes80/FMgGKlbABXv/rM1s1W8+8/WzFbx7j/rOZsTgGhdAqh8958tmbHy3X+2ZMbKd/9ZrxmdAEQTANGaB3CEx5/ZtVmP8PgzuzbrER5/Zj1mdQIQTQBEEwDRBEA0ARBNAEQTANEEQDQBEK15AFX+QtsS12at8hfalrg2a5W/x7NEj1mdAEQTANG6BHCEx6AlMx7hMWjJjEd4DOo1oxOAaN0CqHwKrJmt8imwZrbKp0DP2ZwAROsaQMVT4JaZKp4Ct8xU8RToPVP3E6BSBFtmqRTBllkqRTBiliGPQBUi2GOGChHsMUOFCEbNMOwdYGQEe157ZAR7XntkBCOvPfQleEQELa45IoIW1xyxiKNPn+GfAvWMoOW1ekbQ8lo9F3L08k9TgQCmqU8EPa7RI4Ie1+ixmBWWf5oKfUvkzNeknudrUtsoF8DMF2V/UuGTpmnyRdlDLY2hytJfsjSGKkt/ydIYqi79a4cIAFop8RIMowiAaAIgmgCIJgCiCYBoAiCaAIgmAKIJgGgCIJoAiCYAogmAaAIgmgCIJgCiCYBoAiCaAIgmAKIJgGgCIJoAiCYAogmAaAIgmgCIJgCiCYBoAiCaAIgmAKIJgGgCIJoAiCYAoj0+Pb88jB4CRnh6fnlwAhBNAEQTANEEQLTHafr0MjB6EOhp3nknANEEQLTPAXgMIsXrXXcCEO2LAJwC3LvTHXcCEO2rAJwC3Ktzu+0EINrZAJwC3JtLO+0EINrFAJwC3Itru3z1BBABR/fWDnsEItqbATgFOKolu7voBBABR7N0Zxc/AomAo1izq6veAURAdWt3dPVLsAio6pbdvOlTIBFQza07efPHoCKgii27uOnfAUTAaFt3cPM/hImAUfbYvV2X98P7dx/3/H1wzp433V3/K4TTgNb23rFmC+s0YE+tbq7N79hCYIvWTxXdHlmEwBq9Hqe7P7MLgWt6v0cOfWkVA9M09sOTcp/aiOK+Vfuk8H82tchbJp00KAAAAABJRU5ErkJggg==">
+<link rel="icon" type="image/png" sizes="192x192" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAFhklEQVR4nO3dMXLkVBSGUdlFygZmZg0UATshYSEkBEQEJCyEhJ0QUKzB9gZYwBBMacrT092WWnrvXfV/TuyybnA/Palnyv0wFfPh/buPo2egnafnl4fRM7w2dBjLzjSNjaL7hS091/SOodvFLD5r9Aqh+UUsPlu0DqHZL7f47KlVCLv/UotPS3uH8LjnL7P8tLb3ju1Sk8VnhD1Og80ngOVnlD12b1MAlp/Rtu7gzQFYfqrYsos3BWD5qebWnVwdgOWnqlt2c1UAlp/q1u7o4gAsP0exZlcXBWD5OZqlO/tmAJafo1qyu7v+Vwg4mqsBuPtzdG/t8MUALD/34touewQi2tkA3P25N5d22glAtK8CcPfnXp3bbScA0b4IwN2fe3e6404Aon0OwN2fFK933QlANAEQ7XGaPP6QZ955JwDRBEA0ARBNAER78AJMMicA0QRANAEQTQBEEwDRBEA0ARBNAEQTANEEQDQBEE0ARBMA0QRANAEQTQBEEwDRBEA0ARBNAEQTANEEQDQBEE0ARBMA0QRANAEQTQBEEwDRBEA0ARBNAEQTANEEQDQBEE0ARBMA0b4ZPcASf//0/aKf++HPf5rOsdV3v/286Of+/fWPxpNs89fv3y76uR9/+a/xJNuV/ZrUpUt/SZUYli79JVViWLr0l1SNoVwAWxf/1KgQti7+qVEhbF38U9VCKBPA3ot/qlcIey/+qV4h7L34p6qEUOIluPXy97pG6+XvdY3Wy9/rGksMD6DHYva4Vo/F7HGtnotZIYKhAfRc/pbX7Ln8La85YiFHRzAsgBHL3+LaI5a/xbVHLuLIaw8JYOTy7znDyOXfc4bRd+GRM3QPoMLyz7bMUmH5Z1tmqbD8sxGzdA2g0vLPbpmp0vLPbpmp0vLPes80/FMgGKlbABXv/rM1s1W8+8/WzFbx7j/rOZsTgGhdAqh8958tmbHy3X+2ZMbKd/9ZrxmdAEQTANGaB3CEx5/ZtVmP8PgzuzbrER5/Zj1mdQIQTQBEEwDRBEA0ARBNAEQTANEEQDQBEK15AFX+QtsS12at8hfalrg2a5W/x7NEj1mdAEQTANG6BHCEx6AlMx7hMWjJjEd4DOo1oxOAaN0CqHwKrJmt8imwZrbKp0DP2ZwAROsaQMVT4JaZKp4Ct8xU8RToPVP3E6BSBFtmqRTBllkqRTBiliGPQBUi2GOGChHsMUOFCEbNMOwdYGQEe157ZAR7XntkBCOvPfQleEQELa45IoIW1xyxiKNPn+GfAvWMoOW1ekbQ8lo9F3L08k9TgQCmqU8EPa7RI4Ie1+ixmBWWf5oKfUvkzNeknudrUtsoF8DMF2V/UuGTpmnyRdlDLY2hytJfsjSGKkt/ydIYqi79a4cIAFop8RIMowiAaAIgmgCIJgCiCYBoAiCaAIgmAKIJgGgCIJoAiCYAogmAaAIgmgCIJgCiCYBoAiCaAIgmAKIJgGgCIJoAiCYAogmAaAIgmgCIJgCiCYBoAiCaAIgmAKIJgGgCIJoAiCYAoj0+Pb88jB4CRnh6fnlwAhBNAEQTANEEQLTHafr0MjB6EOhp3nknANEEQLTPAXgMIsXrXXcCEO2LAJwC3LvTHXcCEO2rAJwC3Ktzu+0EINrZAJwC3JtLO+0EINrFAJwC3Itru3z1BBABR/fWDnsEItqbATgFOKolu7voBBABR7N0Zxc/AomAo1izq6veAURAdWt3dPVLsAio6pbdvOlTIBFQza07efPHoCKgii27uOnfAUTAaFt3cPM/hImAUfbYvV2X98P7dx/3/H1wzp433V3/K4TTgNb23rFmC+s0YE+tbq7N79hCYIvWTxXdHlmEwBq9Hqe7P7MLgWt6v0cOfWkVA9M09sOTcp/aiOK+Vfuk8H82tchbJp00KAAAAABJRU5ErkJggg==">
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Push%20Pull%20Legs%22%2C%22short_name%22%3A%22PPL%20Tracker%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%231C1B1A%22%2C%22theme_color%22%3A%22%231C1B1A%22%2C%22start_url%22%3A%22./%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage/png%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAFhklEQVR4nO3dMXLkVBSGUdlFygZmZg0UATshYSEkBEQEJCyEhJ0QUKzB9gZYwBBMacrT092WWnrvXfV/TuyybnA/Palnyv0wFfPh/buPo2egnafnl4fRM7w2dBjLzjSNjaL7hS091/SOodvFLD5r9Aqh%2BUUsPlu0DqHZL7f47KlVCLv/UotPS3uH8LjnL7P8tLb3ju1Sk8VnhD1Og80ngOVnlD12b1MAlp/Rtu7gzQFYfqrYsos3BWD5qebWnVwdgOWnqlt2c1UAlp/q1u7o4gAsP0exZlcXBWD5OZqlO/tmAJafo1qyu7v%2BVwg4mqsBuPtzdG/t8MUALD/34touewQi2tkA3P25N5d22glAtK8CcPfnXp3bbScA0b4IwN2fe3e6404Aon0OwN2fFK933QlANAEQ7XGaPP6QZ955JwDRBEA0ARBNAER78AJMMicA0QRANAEQTQBEEwDRBEA0ARBNAEQTANEEQDQBEE0ARBMA0QRANAEQTQBEEwDRBEA0ARBNAEQTANEEQDQBEE0ARBMA0QRANAEQTQBEEwDRBEA0ARBNAEQTANEEQDQBEE0ARBMA0b4ZPcASf//0/aKf%2B%2BHPf5rOsdV3v/286Of%2B/fWPxpNs89fv3y76uR9/%2Ba/xJNuV/ZrUpUt/SZUYli79JVViWLr0l1SNoVwAWxf/1KgQti7%2BqVEhbF38U9VCKBPA3ot/qlcIey/%2BqV4h7L34p6qEUOIluPXy97pG6%2BXvdY3Wy9/rGksMD6DHYva4Vo/F7HGtnotZIYKhAfRc/pbX7Ln8La85YiFHRzAsgBHL3%2BLaI5a/xbVHLuLIaw8JYOTy7znDyOXfc4bRd%2BGRM3QPoMLyz7bMUmH5Z1tmqbD8sxGzdA2g0vLPbpmp0vLPbpmp0vLPes80/FMgGKlbABXv/rM1s1W8%2B8/WzFbx7j/rOZsTgGhdAqh8958tmbHy3X%2B2ZMbKd/9ZrxmdAEQTANGaB3CEx5/ZtVmP8PgzuzbrER5/Zj1mdQIQTQBEEwDRBEA0ARBNAEQTANEEQDQBEK15AFX%2BQtsS12at8hfalrg2a5W/x7NEj1mdAEQTANG6BHCEx6AlMx7hMWjJjEd4DOo1oxOAaN0CqHwKrJmt8imwZrbKp0DP2ZwAROsaQMVT4JaZKp4Ct8xU8RToPVP3E6BSBFtmqRTBllkqRTBiliGPQBUi2GOGChHsMUOFCEbNMOwdYGQEe157ZAR7XntkBCOvPfQleEQELa45IoIW1xyxiKNPn%2BGfAvWMoOW1ekbQ8lo9F3L08k9TgQCmqU8EPa7RI4Ie1%2BixmBWWf5oKfUvkzNeknudrUtsoF8DMF2V/UuGTpmnyRdlDLY2hytJfsjSGKkt/ydIYqi79a4cIAFop8RIMowiAaAIgmgCIJgCiCYBoAiCaAIgmAKIJgGgCIJoAiCYAogmAaAIgmgCIJgCiCYBoAiCaAIgmAKIJgGgCIJoAiCYAogmAaAIgmgCIJgCiCYBoAiCaAIgmAKIJgGgCIJoAiCYAoj0%2BPb88jB4CRnh6fnlwAhBNAEQTANEEQLTHafr0MjB6EOhp3nknANEEQLTPAXgMIsXrXXcCEO2LAJwC3LvTHXcCEO2rAJwC3Ktzu%2B0EINrZAJwC3JtLO%2B0EINrFAJwC3Itru3z1BBABR/fWDnsEItqbATgFOKolu7voBBABR7N0Zxc/AomAo1izq6veAURAdWt3dPVLsAio6pbdvOlTIBFQza07efPHoCKgii27uOnfAUTAaFt3cPM/hImAUfbYvV2X98P7dx/3/H1wzp433V3/K4TTgNb23rFmC%2Bs0YE%2Btbq7N79hCYIvWTxXdHlmEwBq9Hqe7P7MLgWt6v0cOfWkVA9M09sOTcp/aiOK%2BVfuk8H82tchbJp00KAAAAABJRU5ErkJggg%3D%3D%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image/png%22%7D%2C%7B%22src%22%3A%22data%3Aimage/png%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAARSUlEQVR4nO3csZUjxRqGYS3nuiSwbAwcDDLBIRAcDCwMHALBIRMMDjEACRDAXmMYRqsZzahb1VV/1fc8/r1Hqja%2Bt0uzvDtR0ocv3n8c/RkAWvjzr7/fjf4MPOehDGLgAR4IhDEcegfGHmAbUXA8B3wAgw/QliBoz4E2YPAB%2BhIE93OAOxl9gBrEwD4ObQOjD1CbGLidg3qD0QeYkxh4ncO5wvADrEEIvMyhnDH6AGsTA08cxMnwA6QRAuEBYPgBsiWHQOQXN/wAnEsMgagvbPgBeE1SCER8UcMPwBYJIfDZ6A9wNOMPwFYJ27Fs4SQ8PACOt%2BptwHJfyvADcITVQmCpnwCMPwBHWW1jlqiZ1R4KALWtcBsw/Q2A8QegtxW2Z%2BoAWOEBADCn2TdoyiuM2Q8dgLXM%2BJPAdDcAxh%2BAambcpqkCYMYDBiDDbBs1xZXFbIcKQLYZfhIofwNg/AGYzQzbVToAZjhAAHhJ9Q0rGwDVDw4A3lJ5y0oGQOUDA4Atqm5auQCoelAAsFfFbSsVABUPCABaqLZxZQKg2sEAQGuVtq5EAFQ6EAA4UpXNGx4AVQ4CAHqpsH1DA6DCAQDACKM3cFgAjP7iADDayC0cEgDGHwAejNrE7gFg/AHgUyO2sWsAGH8AeFnvjewWAMYfAF7Xcyu7BIDxB4Db9NrM4f8dAACgv8MDwNs/AGzTYzsPDQDjDwD7HL2hhwWA8QeA%2Bxy5pf4GAAACHRIA3v4BoI2jNrV5ABh/AGjriG1tGgDGHwCO0Xpj/Q0AAARqFgDe/gHgWC23tkkAGH8A6KPV5voJAAAC3R0A3v4BoK8W2%2BsGAAAC3RUA3v4BYIx7N3h3ABh/ABjrni32EwAABNoVAN7%2BAaCGvZvsBgAAAm0OAG//AFDLnm12AwAAgTYFgLd/AKhp60a7AQCAQDcHgLd/AKhty1a7AQCAQDcFgLd/AJjDrZvtBgAAAgkAAAj0ZgC4/geAudyy3W4AACDQqwHg7R8A5vTWhrsBAIBAAgAAAl0NANf/ADC317bcDQAABBIAABDoxQBw/Q8Aa7i26W4AACCQAACAQM8CwPU/AKzlpW13AwAAgQQAAAQSAAAQ6JMA8Ps/AKzpcuPdAABAIAEAAIEEAAAE%2Bi8A/P4PAGs733o3AAAQSAAAQCABAACBBAAABPrsdPIHgACQ4nHz3QAAQCABAACBBAAABBIAABBIAABAIAEAAIEEAAAEeue/AQAAedwAAEAgAQAAgQQAAAQSAAAQSAAAQCABAACBBAAABBIAABBIAABAIAEAAIEEAAAEEgAAEEgAAEAgAQAAgQQAAAQSAAAQSAAAQCABAACBBAAABBIAABBIAABAIAEAAIEEAAAEEgAAEEgAAEAgAQAAgQQAAAQSAAAQSAAAQCABAACBBAAABBIAABBIAABAIAEAAIEEAAAEEgAAEEgAAEAgAQAAgQQAAAQSAAAQSAAAQCABAACBBAAABBIAABBIAABAIAEAAIEEAAAEEgAAEEgAAEAgAQAAgQQAAAQSAAAQSAAAQCABAACBBAAABBIAABBIAABAIAEAAIEEAAAEEgAAEEgAAEAgAQAAgQQAAAQSAAAQSAAAQCABAACBBAAABBIAABBIAABAIAEAAIEEAAAEEgAAEEgAAEAgAQAAgQQAAAQSAAAQSAAAQCABAACBBAAABBIAABBIAABAIAEAAIEEAAAEEgAAEEgAAEAgAQAAgQQAAAQSAAAQSAAAQCABAACBBAAABBIAABBIAABAIAEAAIEEAAAEEgAAEOh/oz8Abf327Ve7/ndf//J7089BHV/%2B%2BN2u/90fP/zc%2BJNQxa8/fb7rf/fN9/80/iSM9O7DF%2B8/jv4QbLd36LcSBvPYO/RbCYN57B36rYTBnATAJHoN/lsEQR29Bv8tgqCOXoP/FkEwBwFQWJXRv0YM9Fdl9K8RA/1VGf1rxEBdAqCg6sN/SQgcr/rwXxICx6s%2B/JeEQD0CoJDZhv%2BSEGhvtuG/JATam234LwmBOgRAAbMP/yUhcL/Zh/%2BSELjf7MN/SQiMJwAGWm34LwmB7VYb/ktCYLvVhv%2BSEBhHAAyw%2BvBfEgJvW334LwmBt60%2B/JeEQH/%2BS4CdpY3/6ZT5nbdIG//TKfM7b5E2/qdT5ncezQ1AJ0bwgduAJ0bwgduAJ0bwgduAPtwAdGD8nziLB8b/ibN4YPyfOIs%2BBMDBDN5z6Wdi8J5LPxOD95wzOZ6fAA6SPnK3SvpJIH3kbpX0k4CRu42fBI7hBuAAxv92KWdl/G%2BXclbG/3bO6hgCoLGUQWtp9TNLGbSWVj8zg7adM2tPADS0%2BpAdadWzW33IjrTq2Rmy/ZxdWwKgkVUHrKfVznDVAetptTM0YPdzhu0IgAZWG66RVjnL1YZrpFXO0nC14yzbEAB3WmWwKpn9TFcZrEpmP1OD1Z4zvZ8AuMPsQ1XZrGc7%2B1BVNuvZGqrjONv7CAAACCQAdpr1DXUms53xrG%2BoM5ntjL2hHs8Z7ycAdphtmGY2y1nPNkwzm%2BWsDVM/znofAbDRLIO0kupnPssgraT6mRuk/pz5dgIAAAIJgA2qv4murOrZV38TXVnVs/cmOo6z30YA3KjqACWp9gyqDlCSas/AAI3nGdxOAABAIAFwg2pvnsmqPItqb57JqjwLb551eBa3EQAAEEgAvKHKGydPRj%2BTKm%2BcPBn9TLxx1uOZvE0AAEAgAfCK0W%2BaXDfq2Yx%2B0%2BS6Uc/Gm2Zdns3rBAAABBIAV3j7r6/3M/L2X1/vZ%2BQNsz7P6DoBAACBBMALvP3Po9ez8vY/j17PypvlPDyrlwkAAAgkAAAgkAC44Pp/Pkc/M9f/8zn6mblSno9n9pwAAIBAAgAAAgkAAAgkAM74/X9eRz07v//P66hn57fkeXl2nxIAABBIAABAIAEAAIEEAAAEEgAAEEgA/Mu/AJhf62foXwDMr/Uz9Ffk8/MMnwgAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAgkAP719S%2B/j/4I3Kn1M/zjh5%2Bb/v/RX%2Btn%2BM33/zT9/6M/z/CJAACAQAIAAAIJAAAIJAAAIJAAAIBAAuCMfwkwr6OenX8JMK%2Bjnp2/Ip%2BXZ/cpAQAAgQQAAAQSAAAQSABc8HcA8zn6mfk7gPkc/cz8ljwfz%2Bw5AQAAgQQAAAQSAC/wM8A8ej0rPwPMo9ezcqU8D8/qZQIAAAIJgCvcAtTX%2Bxm5Baiv9zPyZlmfZ3SdAACAQALgFW4B6hr1bNwC1DXq2XjDrMuzeZ0AAIBAAuANbgHqGf1M3ALUM/qZeNOsxzN5mwAAgEAC4Aaj3zh5UuVZjH7j5EmVZ%2BGNsw7P4jYCAAACCYAbVXnzTFbtGVR580xW7Rl48xzPM7idANig2gAlqXr21QYoSdWzN0DjOPttBAAABBIAG1V9E11Z9TOv%2Bia6supn7k20P2e%2BnQDYofogrWSWs64%2BSCuZ5awNUj/Oeh8BsNMswzSz2c54lmGa2WxnbJiO54z3EwAAEEgA3GG2N9SZzHq2s72hzmTWs/WGehxnex8BcKdZh6qy2c901qGqbPYzNVTtOdP7CYAGZh%2BsSlY5y9kHq5JVztJgteMs2xAAjawyXCOtdoarDNdIq52h4bqfM2xHADS02oD1tOrZrTZgPa16dgZsP2fXlgBobNUhO9LqZ7bqkB1p9TMzZNs5s/YEwAFWH7SWUs5q9UFrKeWsDNrtnNUx3n344v3H0R9iZb99%2B9Xoj1BSyvC/5Msfvxv9EUpKGf6X/PrT56M/QkmG/1huAA6WPHTXpJ9J8tBdk34mhu45Z3I8AdBB%2BuCdcxYP0gfvnLN4YPCeOIs%2B/ATQWepPAob/utSfBAz/dak/CRj%2BvtwAdJY4hInfeYvEIUz8zlskDmHidx7NDcBAq98GGP7tVr8NMPzbrX4bYPjHEQAFrBYChv9%2Bq4WA4b/faiFg%2BMcTAIXMHgKGv73ZQ8Dwtzd7CBj%2BOgRAQbOFgOE/3mwhYPiPN1sIGP56BEBh1UPA8PdXPQQMf3/VQ8Dw1yUAJlElBox%2BHVViwOjXUSUGjP4cBMCkegWBwZ9HryAw%2BPPoFQQGf04CYDF7w8DQr2tvGBj6de0NA0O/FgEAAIH8lwABIJAAAIBAAgAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAI9Nmff/39bvSHAAD6%2BfOvv9%2B5AQCAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAj02en08O8BR38QAOB4j5vvBgAAAgkAAAgkAAAgkAAAgED/BYA/BASAtZ1vvRsAAAgkAAAgkAAAgECfBIC/AwCANV1uvBsAAAgkAAAgkAAAgEDPAsDfAQDAWl7adjcAABBIAABAoBcDwM8AALCGa5vuBgAAAgkAAAh0NQD8DAAAc3tty90AAEAgAQAAgV4NAD8DAMCc3tpwNwAAEOjNAHALAABzuWW73QAAQCABAACBbgoAPwMAwBxu3Ww3AAAQ6OYAcAsAALVt2Wo3AAAQaFMAuAUAgJq2brQbAAAItDkA3AIAQC17ttkNAAAE2hUAbgEAoIa9m%2BwGAAAC7Q4AtwAAMNY9W3zXDYAIAIAx7t1gPwEAQKC7A8AtAAD01WJ73QAAQKAmAeAWAAD6aLW5zW4ARAAAHKvl1voJAAACNQ0AtwAAcIzWG9v8BkAEAEBbR2zrIT8BiAAAaOOoTfU3AAAQ6LAAcAsAAPc5cksPvQEQAQCwz9EbevhPACIAALbpsZ3%2BBgAAAnUJALcAAHCbXpvZ7QZABADA63puZdefAEQAALys90Z2/xsAEQAAnxqxjUP%2BCFAEAMCDUZs47F8BiAAA0o3cwqH/DFAEAJBq9AYO/%2B8AjD4AAOitwvYND4DTqcZBAEAPVTavRACcTnUOBACOUmnrygTA6VTrYACgpWobVyoATqd6BwQA96q4beUC4HSqeVAAsEfVTSsZAKdT3QMDgFtV3rKyAXA61T44AHhN9Q0rHQCnU/0DBIBLM2xX%2BQ947sMX7z%2BO/gwAcM0Mw/%2Bo/A3AuZkOFoAss23UVAFwOs13wACsb8Ztmu4Dn/OTAAAjzTj8j6a7ATg388EDMLfZN2jqADid5n8AAMxnhe2Z/guc85MAAEdaYfgfTX8DcG6lBwNALattzFJf5pzbAABaWG34Hy35pc4JAQD2WHX4Hy31E8BLVn%2BAALSXsB3Lf8FzbgMAeE3C8D%2BK%2BaLnhAAA55KG/1HcFz4nBACyJQ7/o9gvfk4IAGRJHv5H8QdwTggArM3wP3EQV4gBgDUY/Zc5lDcIAYA5Gf7XOZwNxABAbUb/dg5qJzEAUIPR38ehNSAGAPoy%2BvdzgAcQBABtGfz2HGgHggBgG4N/PAc8iCgAeGDsx3DoRQkEYBUGvqb/A91bjUIpMfvhAAAAAElFTkSuQmCC%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image/png%22%7D%5D%7D">
+<style>
+  :root {
+    --bg: #1C1B1A;
+    --surface: #26241F;
+    --border: #33312A;
+    --text: #EDE9E1;
+    --text-dim: #8A8578;
+    --text-faint: #6B675C;
+    --push: #E8734A;
+    --pull: #4A9E8E;
+    --legs: #C9A227;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin:0; padding:0; background:var(--bg); color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing:antialiased; }
+  .mono { font-family: "SF Mono", "Menlo", "Consolas", monospace; }
+  .wrap { max-width: 480px; margin: 0 auto; padding: 32px 20px 100px; }
+  h1 { font-family: -apple-system, sans-serif; font-weight: 900; font-size: 28px;
+    letter-spacing: -0.5px; margin: 0 0 12px; }
+  h1 .slash { color: #4A473F; margin: 0 4px; }
+  .streak { display:flex; align-items:center; gap:6px; height:24px; flex-wrap: wrap; }
+  .dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+  .empty-note { font-size:12px; color: var(--text-faint); }
+  .tabs { display:flex; gap:4px; background:var(--surface); border-radius:10px; padding:4px; margin:24px 0; }
+  .tab { flex:1; padding:10px; border:0; border-radius:8px; background:transparent; color:var(--text-dim);
+    font-size:14px; font-weight:500; cursor:pointer; }
+  .tab.active { background:#33312A; color:var(--text); }
+  .type-row { display:flex; gap:8px; margin-bottom:16px; }
+  .type-btn { flex:1; padding:10px; border-radius:10px; font-size:14px; font-weight:600;
+    background:transparent; border:1px solid var(--border); color:var(--text-dim); cursor:pointer; }
+  .date-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+  .date-row label { font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-dim); }
+  input[type=date] { background:var(--surface); border:1px solid var(--border); border-radius:6px;
+    padding:6px 8px; color:var(--text); font-size:14px; }
+  .ex-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:12px; margin-bottom:12px; }
+  .ex-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+  .ex-name { font-size:14px; font-weight:500; }
+  .ex-target { font-size:11px; color:var(--text-faint); font-weight:500; }
+  .howto-toggle { display:flex; align-items:center; gap:4px; font-size:11px; font-weight:600; color:var(--text-faint);
+    background:none; border:0; cursor:pointer; padding:0 0 8px; }
+  .howto-text { font-size:12.5px; line-height:1.5; color:var(--text-dim); margin:0 0 12px; padding-bottom:12px;
+    border-bottom:1px solid var(--border); }
+  .plan-day { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--surface);
+    border:1px solid var(--border); border-radius:8px; margin-bottom:6px; }
+  .plan-day-name { font-size:13px; font-weight:600; width:36px; color:var(--text-dim); }
+  .plan-day-label { font-size:14px; }
+  .progression-box { margin-top:20px; padding:14px; background:var(--surface); border:1px solid var(--border);
+    border-radius:10px; font-size:13px; line-height:1.5; color:var(--text-dim); }
+  .progression-title { font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-faint);
+    margin-bottom:6px; font-weight:600; }
+  .icon-btn { background:none; border:0; color:var(--text-faint); cursor:pointer; padding:2px; }
+  .set-row { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+  .set-idx { font-size:11px; color:var(--text-faint); width:16px; }
+  .set-x { color:#4A473F; font-size:12px; }
+  input.num { width:60px; background:var(--bg); border:1px solid var(--border); border-radius:6px;
+    padding:6px 8px; font-size:14px; color:var(--text); }
+  .add-set { margin-top:6px; font-size:12px; font-weight:600; background:none; border:0; cursor:pointer;
+    display:flex; align-items:center; gap:4px; }
+  .add-ex-row { display:flex; gap:8px; margin-bottom:24px; }
+  .add-ex-row input { flex:1; background:var(--surface); border:1px solid var(--border); border-radius:8px;
+    padding:10px 12px; font-size:14px; color:var(--text); }
+  .add-ex-row button { padding:0 14px; border-radius:8px; border:1px solid var(--border); background:none; color:var(--text-dim); cursor:pointer; }
+  .save-btn { width:100%; padding:14px; border:0; border-radius:10px; font-weight:700; font-size:15px;
+    color:#1C1B1A; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; }
+  .session-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; margin-bottom:12px; overflow:hidden; }
+  .session-head { width:100%; display:flex; align-items:center; justify-content:space-between; padding:12px 16px;
+    background:none; border:0; cursor:pointer; color:var(--text); text-align:left; }
+  .session-info { display:flex; align-items:center; gap:12px; }
+  .session-type { font-size:14px; font-weight:600; }
+  .session-meta { font-size:12px; color:var(--text-faint); }
+  .session-body { padding: 0 16px 16px; border-top:1px solid var(--border); }
+  .ex-detail { margin-top:12px; }
+  .ex-detail-name { font-size:14px; font-weight:500; margin-bottom:6px; }
+  .set-chip { font-size:12px; padding:2px 8px; border-radius:4px; background:var(--bg); color:#B8B4A8; margin:0 6px 6px 0; display:inline-block; }
+  .del-btn { font-size:12px; color:var(--text-dim); background:none; border:0; cursor:pointer; margin-top:8px; padding:0;}
+  .empty-history { text-align:center; padding:60px 0; color:var(--text-faint); font-size:14px; }
+  .toast { position:fixed; bottom:16px; left:50%; transform:translateX(-50%); background:#B85C3A; color:white;
+    font-size:12px; padding:8px 14px; border-radius:8px; opacity:0; transition:opacity .3s; pointer-events:none; }
+  .toast.show { opacity:1; }
+  svg { display:block; }
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<script>
+const TYPES = {
+  push: { label: "Push", accent: "#E8734A", defaults: [
+    {name:"DB Bench Press", target:"3x6–10"},
+    {name:"Incline DB Press", target:"3x8–12"},
+    {name:"Seated DB Shoulder Press", target:"3x8–12"},
+    {name:"Lateral Raises", target:"3x12–15"},
+    {name:"Cable Triceps Pushdown", target:"3x10–15"},
+    {name:"Overhead Triceps Extension", target:"2x10–15"},
+  ]},
+  pull: { label: "Pull", accent: "#4A9E8E", defaults: [
+    {name:"Lat Pulldown", target:"3x8–12"},
+    {name:"Chest-Supported Row", target:"3x8–12"},
+    {name:"Seated Cable Row", target:"3x10–12"},
+    {name:"Face Pulls", target:"3x12–15"},
+    {name:"DB Hammer Curl", target:"3x10–12"},
+    {name:"EZ Bar Curl", target:"2x10–12"},
+  ]},
+  legs: { label: "Legs", accent: "#C9A227", defaults: [
+    {name:"Squat or Leg Press", target:"3x6–10"},
+    {name:"Romanian Deadlift", target:"3x8–10"},
+    {name:"Walking Lunges", target:"2x10 each leg"},
+    {name:"Leg Curl", target:"3x10–15"},
+    {name:"Leg Extension", target:"2x12–15"},
+    {name:"Standing Calf Raise", target:"4x12–15"},
+    {name:"Hanging Leg Raises", target:"3 sets"},
+  ]},
+};
+
+const SCHEDULE = [
+  {day:"Mon", type:"push"}, {day:"Tue", type:"pull"}, {day:"Wed", type:"legs"},
+  {day:"Thu", type:null, label:"Rest or light cardio"},
+  {day:"Fri", type:"push"}, {day:"Sat", type:"pull"}, {day:"Sun", type:"legs", label:"Legs or Rest"},
+];
+const PROGRESSION_NOTE = "Train 1–2 reps short of failure on compound lifts. When you reach the top of the rep range for all sets with good form, increase the weight by the smallest increment next session.";
+
+const HOW_TO = {
+  "DB Bench Press": "Lie on a flat bench holding a dumbbell in each hand at chest level, palms facing forward. Press both dumbbells up until your arms are extended, then lower with control until the dumbbells are level with your chest. Keep your feet flat on the floor and shoulder blades pulled back throughout.",
+  "Incline DB Press": "Set a bench to a 30–45° incline. Press the dumbbells up from shoulder height until arms are extended above your upper chest, then lower slowly back down. Avoid flaring elbows out too wide to protect the shoulders.",
+  "Seated DB Shoulder Press": "Sit with back supported, dumbbells at shoulder height with palms facing forward. Press overhead until arms are extended without locking out hard, then lower back to shoulder height. Keep your core braced so you don't arch your lower back.",
+  "Lateral Raises": "Stand holding a dumbbell in each hand at your sides. With a slight bend in the elbows, raise both arms out to the sides until roughly shoulder height, then lower slowly. Lead with the elbows, not the wrists, and avoid using momentum.",
+  "Cable Triceps Pushdown": "Stand facing a cable machine with a bar or rope attachment set high. Keep elbows tucked at your sides and push the attachment down until arms are fully extended, then return with control. Only your forearms should move.",
+  "Overhead Triceps Extension": "Hold a single dumbbell with both hands overhead, arms extended. Lower it behind your head by bending the elbows, keeping upper arms close to your ears, then extend back up. Keep the movement slow to avoid straining the elbows.",
+  "Lat Pulldown": "Sit at the machine with thighs secured, grip the bar wider than shoulder width. Pull the bar down to your upper chest while squeezing your shoulder blades together, then let it rise back up under control. Avoid leaning back excessively.",
+  "Chest-Supported Row": "Lie chest-down on an incline bench holding dumbbells or a handle attachment. Row the weight toward your torso by driving elbows back, squeezing shoulder blades together, then lower with control. The support prevents momentum from your lower back.",
+  "Seated Cable Row": "Sit at the row machine with knees slightly bent, grip the handle with arms extended. Pull the handle to your torso while keeping your back straight, then extend arms back out. Avoid rounding your lower back at the stretch.",
+  "Face Pulls": "Set a cable at upper-chest to head height with a rope attachment. Pull the rope toward your face, splitting your hands apart and driving elbows high and back, then return slowly. Focus on squeezing the rear shoulders together.",
+  "DB Hammer Curl": "Stand holding dumbbells at your sides with palms facing your body (neutral grip). Curl the weights up toward your shoulders keeping elbows pinned to your sides, then lower with control. Avoid swinging your torso.",
+  "EZ Bar Curl": "Hold an EZ curl bar with an underhand grip on the angled portions. Curl the bar up toward your shoulders keeping elbows fixed at your sides, then lower slowly back to full extension. Keep your torso still throughout.",
+  "Squat or Leg Press": "For squats: bar on your upper back, feet shoulder-width apart, sit back and down until thighs are at least parallel to the floor, then drive back up through your heels. For leg press: feet shoulder-width on the platform, lower until knees reach about 90°, then press back up without locking knees hard.",
+  "Romanian Deadlift": "Hold a barbell or dumbbells in front of your thighs. With a slight knee bend, hinge at the hips and lower the weight along your legs until you feel a stretch in your hamstrings, then drive your hips forward to stand back up. Keep your back flat throughout.",
+  "Walking Lunges": "Hold dumbbells at your sides or a bar on your back. Step forward into a lunge, lowering your back knee toward the floor, then push off to bring your back leg forward into the next step. Keep your torso upright and knee tracking over your toes.",
+  "Leg Curl": "Lie face down (or sit, depending on machine) with the pad against your lower legs. Curl your heels toward your glutes by bending the knees, then lower back down with control. Avoid lifting your hips off the pad.",
+  "Leg Extension": "Sit in the machine with the pad resting on your shins, knees bent at 90°. Extend your legs until nearly straight, squeezing the quads at the top, then lower back down slowly. Avoid locking the knees hard or using momentum.",
+  "Standing Calf Raise": "Stand on a raised platform or machine with the balls of your feet on the edge. Rise up onto your toes as high as possible, pause briefly, then lower your heels below platform level for a full stretch. Keep the movement slow and controlled.",
+  "Hanging Leg Raises": "Hang from a pull-up bar with arms fully extended. Raise your legs (straight or bent at the knees) up toward your chest by curling your pelvis, then lower back down with control. Avoid swinging — let your abs do the work, not momentum.",
+};
+
+const STORAGE_KEY = "ppl-sessions-v1";
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+const todayISO = () => new Date().toISOString().slice(0,10);
+const fmtDate = (iso) => new Date(iso+"T00:00:00").toLocaleDateString(undefined,{month:"short",day:"numeric"});
+
+let sessions = [];
+try { sessions = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); } catch(e) { sessions = []; }
+
+let state = {
+  view: "log",
+  dayType: "push",
+  date: todayISO(),
+  exercises: makeDraft("push"),
+  newExName: "",
+  expandedId: null,
+  infoOpenId: null,
+};
+
+function makeDraft(type) {
+  return TYPES[type].defaults.map(d => ({ id: uid(), name: d.name, target: d.target, sets:[{weight:"",reps:""}] }));
+}
+
+function persist() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
+  } catch(e) {
+    showToast();
+  }
+}
+
+function showToast() {
+  const t = document.getElementById("toast");
+  if (!t) return;
+  t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"), 2500);
+}
+
+function icon(name, size=16) {
+  const icons = {
+    plus: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>`,
+    x: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>`,
+    check: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>`,
+    chevDown: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>`,
+    chevUp: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 15l-6-6-6 6"/></svg>`,
+  };
+  return icons[name] || "";
+}
+
+function render() {
+  const app = document.getElementById("app");
+  const t = TYPES[state.dayType];
+  const streak = sessions.slice(0,12).reverse();
+
+  let html = `
+    <h1>
+      <span style="color:${TYPES.push.accent}">PUSH</span><span class="slash">/</span>
+      <span style="color:${TYPES.pull.accent}">PULL</span><span class="slash">/</span>
+      <span style="color:${TYPES.legs.accent}">LEGS</span>
+    </h1>
+    <div class="streak">
+      ${streak.length === 0
+        ? `<span class="empty-note mono">no sessions logged yet</span>`
+        : streak.map(s => `<div class="dot" style="background:${TYPES[s.type].accent}" title="${TYPES[s.type].label} · ${fmtDate(s.date)}"></div>`).join("")}
+    </div>
+
+    <div class="tabs">
+      <button class="tab ${state.view==='log'?'active':''}" data-action="setView" data-view="log">New session</button>
+      <button class="tab ${state.view==='history'?'active':''}" data-action="setView" data-view="history">History</button>
+      <button class="tab ${state.view==='plan'?'active':''}" data-action="setView" data-view="plan">Plan</button>
+    </div>
+  `;
+
+  if (state.view === "log") {
+    html += `<div class="type-row">`;
+    for (const [key, val] of Object.entries(TYPES)) {
+      const active = state.dayType === key;
+      html += `<button class="type-btn" data-action="switchType" data-type="${key}"
+        style="border-color:${active?val.accent:'#33312A'}; background:${active?val.accent+'22':'transparent'}; color:${active?val.accent:'#8A8578'}">
+        ${val.label}</button>`;
+    }
+    html += `</div>`;
+
+    html += `
+      <div class="date-row">
+        <label>Date</label>
+        <input type="date" id="dateInput" value="${state.date}" />
+      </div>
+    `;
+
+    for (const ex of state.exercises) {
+      const infoOpen = state.infoOpenId === ex.id;
+      html += `<div class="ex-card">
+        <div class="ex-head">
+          <span class="ex-name">${escapeHtml(ex.name)}${ex.target ? ` <span class="ex-target mono">${ex.target}</span>` : ""}</span>
+          <button class="icon-btn" data-action="removeExercise" data-id="${ex.id}">${icon('x',14)}</button>
+        </div>
+        <button class="howto-toggle" data-action="toggleInfo" data-id="${ex.id}">
+          How to perform ${infoOpen ? icon('chevUp',12) : icon('chevDown',12)}
+        </button>
+        ${infoOpen ? `<p class="howto-text">${escapeHtml(HOW_TO[ex.name] || "No description available for this exercise yet.")}</p>` : ""}`;
+      ex.sets.forEach((s, i) => {
+        html += `<div class="set-row">
+          <span class="set-idx mono">${i+1}</span>
+          <input class="num mono" inputmode="decimal" placeholder="kg" value="${s.weight}" data-action="updateSet" data-exid="${ex.id}" data-idx="${i}" data-field="weight" />
+          <span class="set-x">×</span>
+          <input class="num mono" inputmode="numeric" placeholder="reps" value="${s.reps}" data-action="updateSet" data-exid="${ex.id}" data-idx="${i}" data-field="reps" />
+          ${ex.sets.length>1 ? `<button class="icon-btn" style="margin-left:auto" data-action="removeSet" data-exid="${ex.id}" data-idx="${i}">${icon('x',12)}</button>` : ""}
+        </div>`;
+      });
+      html += `<button class="add-set" style="color:${t.accent}" data-action="addSet" data-exid="${ex.id}">${icon('plus',12)} add set</button>`;
+      html += `</div>`;
+    }
+
+    html += `
+      <div class="add-ex-row">
+        <input id="newExInput" placeholder="add exercise…" value="${escapeHtml(state.newExName)}" />
+        <button data-action="addExercise">${icon('plus',16)}</button>
+      </div>
+      <button class="save-btn" style="background:${t.accent}" data-action="saveSession">${icon('check',16)} Save ${t.label.toLowerCase()} session</button>
+    `;
+  } else if (state.view === "plan") {
+    html += `<div>`;
+    for (const d of SCHEDULE) {
+      const st = d.type ? TYPES[d.type] : null;
+      html += `<div class="plan-day">
+        <span class="plan-day-name mono">${d.day}</span>
+        ${st ? `<div class="dot" style="background:${st.accent}"></div>` : `<div class="dot" style="background:#4A473F"></div>`}
+        <span class="plan-day-label">${d.label ? d.label : st.label}</span>
+      </div>`;
+    }
+    html += `<div class="progression-box">
+      <div class="progression-title">Progression</div>
+      ${PROGRESSION_NOTE}
+    </div>`;
+    html += `</div>`;
+  } else {
+    if (sessions.length === 0) {
+      html += `<div class="empty-history">Nothing logged yet — your first session starts the streak.</div>`;
+    } else {
+      for (const s of sessions) {
+        const st = TYPES[s.type];
+        const open = state.expandedId === s.id;
+        const totalSets = s.exercises.reduce((n,e)=>n+e.sets.length,0);
+        html += `<div class="session-card">
+          <button class="session-head" data-action="toggleExpand" data-id="${s.id}">
+            <div class="session-info">
+              <div class="dot" style="background:${st.accent}"></div>
+              <div>
+                <div class="session-type">${st.label}</div>
+                <div class="session-meta mono">${fmtDate(s.date)} · ${s.exercises.length} exercises · ${totalSets} sets</div>
+              </div>
+            </div>
+            ${open ? icon('chevUp',16) : icon('chevDown',16)}
+          </button>`;
+        if (open) {
+          html += `<div class="session-body">`;
+          s.exercises.forEach(e => {
+            html += `<div class="ex-detail">
+              <div class="ex-detail-name">${escapeHtml(e.name)}</div>
+              <div>${e.sets.map(set=>`<span class="set-chip mono">${set.weight}×${set.reps}</span>`).join("")}</div>
+            </div>`;
+          });
+          html += `<button class="del-btn" data-action="deleteSession" data-id="${s.id}">Delete session</button>`;
+          html += `</div>`;
+        }
+        html += `</div>`;
+      }
+    }
+  }
+
+  html += `<div class="toast" id="toast">Couldn't save — storage may be full or blocked.</div>`;
+  app.innerHTML = html;
+
+  const dateInput = document.getElementById("dateInput");
+  if (dateInput) dateInput.addEventListener("change", e => { state.date = e.target.value; });
+  const newExInput = document.getElementById("newExInput");
+  if (newExInput) {
+    newExInput.addEventListener("input", e => { state.newExName = e.target.value; });
+    newExInput.addEventListener("keydown", e => { if (e.key === "Enter") addExercise(); });
+  }
+}
+
+function escapeHtml(str) {
+  const d = document.createElement("div");
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+function switchType(type) {
+  state.dayType = type;
+  state.exercises = makeDraft(type);
+  render();
+}
+
+function addExercise() {
+  const name = (state.newExName || "").trim();
+  if (!name) return;
+  state.exercises.push({ id: uid(), name, sets:[{weight:"",reps:""}] });
+  state.newExName = "";
+  render();
+}
+
+function removeExercise(id) {
+  state.exercises = state.exercises.filter(e => e.id !== id);
+  render();
+}
+
+function addSet(exId) {
+  const ex = state.exercises.find(e => e.id === exId);
+  if (ex) ex.sets.push({weight:"",reps:""});
+  render();
+}
+
+function removeSet(exId, idx) {
+  const ex = state.exercises.find(e => e.id === exId);
+  if (ex) ex.sets.splice(idx,1);
+  render();
+}
+
+function updateSet(exId, idx, field, value) {
+  const ex = state.exercises.find(e => e.id === exId);
+  if (ex) ex.sets[idx][field] = value;
+  // no full render needed to avoid losing focus; update in place next render only on blur-triggering actions
+}
+
+function saveSession() {
+  const cleaned = state.exercises.map(e => ({
+    name: e.name,
+    sets: e.sets.filter(s => s.weight !== "" || s.reps !== "").map(s => ({ weight: Number(s.weight)||0, reps: Number(s.reps)||0 }))
+  })).filter(e => e.sets.length > 0);
+
+  if (cleaned.length === 0) return;
+
+  const session = { id: uid(), date: state.date, type: state.dayType, exercises: cleaned, loggedAt: Date.now() };
+  sessions = [session, ...sessions].sort((a,b) => a.date < b.date ? 1 : -1);
+  persist();
+  state.exercises = makeDraft(state.dayType);
+  state.view = "history";
+  render();
+}
+
+function deleteSession(id) {
+  sessions = sessions.filter(s => s.id !== id);
+  persist();
+  render();
+}
+
+document.addEventListener("click", (e) => {
+  const el = e.target.closest("[data-action]");
+  if (!el) return;
+  const action = el.dataset.action;
+  if (action === "setView") { state.view = el.dataset.view; render(); }
+  else if (action === "switchType") switchType(el.dataset.type);
+  else if (action === "addExercise") addExercise();
+  else if (action === "removeExercise") removeExercise(el.dataset.id);
+  else if (action === "addSet") addSet(el.dataset.exid);
+  else if (action === "removeSet") { removeSet(el.dataset.exid, Number(el.dataset.idx)); }
+  else if (action === "saveSession") saveSession();
+  else if (action === "toggleExpand") { state.expandedId = state.expandedId === el.dataset.id ? null : el.dataset.id; render(); }
+  else if (action === "toggleInfo") { state.infoOpenId = state.infoOpenId === el.dataset.id ? null : el.dataset.id; render(); }
+  else if (action === "deleteSession") { if (confirm("Delete this session?")) deleteSession(el.dataset.id); }
+});
+
+document.addEventListener("input", (e) => {
+  if (e.target.dataset.action === "updateSet") {
+    updateSet(e.target.dataset.exid, Number(e.target.dataset.idx), e.target.dataset.field, e.target.value);
+  }
+});
+
+render();
+</script>
+</body>
+</html>
