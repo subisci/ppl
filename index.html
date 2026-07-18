@@ -95,6 +95,24 @@
   .timer-start { background:#4A9E8E; color:#1C1B1A; }
   .timer-pause { background:#C9A227; color:#1C1B1A; }
   .timer-reset { background:transparent; border:1px solid var(--border) !important; color:var(--text-dim); }
+
+  .mini-timer { background:var(--surface); border:1px solid var(--border); border-radius:12px; margin-bottom:16px;
+    overflow:hidden; transition: border-color .2s, background .2s; }
+  .mini-timer-active { border-color:#4A9E8E88; }
+  .mini-timer-done { border-color:#B85C3A; background:#B85C3A18; }
+  .mini-timer-head { width:100%; display:flex; align-items:center; justify-content:space-between;
+    padding:11px 14px; background:none; border:0; cursor:pointer; color:var(--text); }
+  .mini-timer-left { display:flex; align-items:center; gap:9px; }
+  .mini-timer-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .mini-timer-label { font-size:12px; font-weight:600; color:var(--text-dim); }
+  .mini-timer-display { font-size:16px; font-weight:600; letter-spacing:0.5px; font-variant-numeric: tabular-nums; }
+  .mini-timer-right { display:flex; align-items:center; gap:10px; }
+  .mini-quick-btn { font-size:12px; font-weight:700; padding:5px 12px; border-radius:7px; background:#4A9E8E;
+    color:#1C1B1A; }
+  .mini-quick-pause { background:#C9A227; }
+  .mini-timer-body { padding:0 14px 16px; border-top:1px solid var(--border); padding-top:14px; }
+  .mini-timer-body .timer-display-box { padding:24px 16px; margin-bottom:14px; }
+  .mini-timer-body .timer-display { font-size:40px; }
   .icon-btn { background:none; border:0; color:var(--text-faint); cursor:pointer; padding:2px; }
   .set-row { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
   .set-idx { font-size:11px; color:var(--text-faint); width:16px; }
@@ -220,6 +238,7 @@ let state = {
   expandedId: null,
   infoOpenId: null,
   editingDescId: null,
+  timerExpanded: false,
 };
 
 let timer = {
@@ -374,9 +393,8 @@ function updateTimerDisplay() {
       return;
     }
   }
-  const disp = document.getElementById("timerDisplay");
-  if (!disp) return;
-  disp.textContent = timer.mode === "stopwatch" ? fmtStopwatch(timerElapsedMs()) : fmtCountdown(timerRemainingMs());
+  const text = timer.mode === "stopwatch" ? fmtStopwatch(timerElapsedMs()) : fmtCountdown(timerRemainingMs());
+  document.querySelectorAll(".timer-display-text").forEach(el => { el.textContent = text; });
 }
 
 setInterval(() => {
@@ -394,6 +412,73 @@ function icon(name, size=16) {
     trash: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6h16Z"/></svg>`,
   };
   return icons[name] || "";
+}
+
+function renderMiniTimer() {
+  const isRest = timer.mode === "rest";
+  const displayMs = isRest ? timerRemainingMs() : timerElapsedMs();
+  const displayText = isRest ? fmtCountdown(displayMs) : fmtStopwatch(displayMs);
+  const expanded = state.timerExpanded;
+  const done = isRest && displayMs <= 0;
+  const presets = [30,60,90,120,180];
+
+  let html = `<div class="mini-timer ${timer.running ? 'mini-timer-active' : ''} ${done ? 'mini-timer-done' : ''}">`;
+  html += `<button class="mini-timer-head" data-action="toggleTimerWidget">
+    <div class="mini-timer-left">
+      <div class="mini-timer-dot" style="background:${isRest ? '#4A9E8E' : '#C9A227'}"></div>
+      <span class="mini-timer-label">${isRest ? 'Rest' : 'Stopwatch'}</span>
+      <span class="mini-timer-display timer-display-text mono">${displayText}</span>
+    </div>
+    <div class="mini-timer-right">
+      ${!expanded ? (
+        timer.running
+          ? `<span class="mini-quick-btn mini-quick-pause" data-action="timerPause">Pause</span>`
+          : `<span class="mini-quick-btn mini-quick-start" data-action="timerStart">${(isRest && timer.finished) ? "Restart" : (timerElapsedMs()>0 ? "Resume" : "Start")}</span>`
+      ) : ""}
+      ${expanded ? icon('chevUp',14) : icon('chevDown',14)}
+    </div>
+  </button>`;
+
+  if (expanded) {
+    html += `<div class="mini-timer-body">
+      <div class="timer-mode-row">
+        <button class="type-btn" data-action="timerMode" data-mode="rest"
+          style="border-color:${isRest?'#4A9E8E':'#33312A'}; background:${isRest?'#4A9E8E22':'transparent'}; color:${isRest?'#4A9E8E':'#8A8578'}">Rest Timer</button>
+        <button class="type-btn" data-action="timerMode" data-mode="stopwatch"
+          style="border-color:${!isRest?'#4A9E8E':'#33312A'}; background:${!isRest?'#4A9E8E22':'transparent'}; color:${!isRest?'#4A9E8E':'#8A8578'}">Stopwatch</button>
+      </div>
+      <div class="timer-display-box ${done ? 'timer-done' : ''}">
+        <div class="timer-display timer-display-text mono">${displayText}</div>
+      </div>`;
+
+    if (isRest) {
+      html += `<div class="preset-row">`;
+      for (const p of presets) {
+        const active = timer.duration === p*1000;
+        html += `<button class="preset-btn ${active?'active':''}" data-action="timerPreset" data-secs="${p}">${p}s</button>`;
+      }
+      html += `</div>
+      <div class="adjust-row">
+        <button class="adjust-btn" data-action="timerAdjust" data-delta="-10000">−10s</button>
+        <button class="adjust-btn" data-action="timerAdjust" data-delta="10000">+10s</button>
+      </div>`;
+    }
+
+    html += `<div class="timer-controls">`;
+    if (!timer.running) {
+      let label = "Start";
+      if (isRest && timer.finished) label = "Restart";
+      else if (timerElapsedMs() > 0) label = "Resume";
+      html += `<button class="timer-btn timer-start" data-action="timerStart">${icon('check',16)} ${label}</button>`;
+    } else {
+      html += `<button class="timer-btn timer-pause" data-action="timerPause">Pause</button>`;
+    }
+    html += `<button class="timer-btn timer-reset" data-action="timerReset">Reset</button>`;
+    html += `</div></div>`;
+  }
+
+  html += `</div>`;
+  return html;
 }
 
 function render() {
@@ -417,7 +502,6 @@ function render() {
       <button class="tab ${state.view==='log'?'active':''}" data-action="setView" data-view="log">Log</button>
       <button class="tab ${state.view==='history'?'active':''}" data-action="setView" data-view="history">History</button>
       <button class="tab ${state.view==='plan'?'active':''}" data-action="setView" data-view="plan">Plan</button>
-      <button class="tab ${state.view==='timer'?'active':''}" data-action="setView" data-view="timer">Timer</button>
     </div>
   `;
 
@@ -437,6 +521,8 @@ function render() {
         <input type="date" id="dateInput" value="${state.date}" />
       </div>
     `;
+
+    html += renderMiniTimer();
 
     for (const ex of state.exercises) {
       const infoOpen = state.infoOpenId === ex.id;
@@ -501,49 +587,6 @@ function render() {
       ${PROGRESSION_NOTE}
     </div>`;
     html += `</div>`;
-  } else if (state.view === "timer") {
-    const isRest = timer.mode === "rest";
-    const displayMs = isRest ? timerRemainingMs() : timerElapsedMs();
-    const displayText = isRest ? fmtCountdown(displayMs) : fmtStopwatch(displayMs);
-    const presets = [30,60,90,120,180];
-
-    html += `<div class="timer-wrap">
-      <div class="timer-mode-row">
-        <button class="type-btn" data-action="timerMode" data-mode="rest"
-          style="border-color:${isRest?'#4A9E8E':'#33312A'}; background:${isRest?'#4A9E8E22':'transparent'}; color:${isRest?'#4A9E8E':'#8A8578'}">Rest Timer</button>
-        <button class="type-btn" data-action="timerMode" data-mode="stopwatch"
-          style="border-color:${!isRest?'#4A9E8E':'#33312A'}; background:${!isRest?'#4A9E8E22':'transparent'}; color:${!isRest?'#4A9E8E':'#8A8578'}">Stopwatch</button>
-      </div>
-
-      <div class="timer-display-box ${isRest && displayMs <= 0 ? 'timer-done' : ''}">
-        <div id="timerDisplay" class="timer-display mono">${displayText}</div>
-      </div>
-    `;
-
-    if (isRest) {
-      html += `<div class="preset-row">`;
-      for (const p of presets) {
-        const active = timer.duration === p*1000;
-        html += `<button class="preset-btn ${active?'active':''}" data-action="timerPreset" data-secs="${p}">${p}s</button>`;
-      }
-      html += `</div>
-      <div class="adjust-row">
-        <button class="adjust-btn" data-action="timerAdjust" data-delta="-10000">−10s</button>
-        <button class="adjust-btn" data-action="timerAdjust" data-delta="10000">+10s</button>
-      </div>`;
-    }
-
-    html += `<div class="timer-controls">`;
-    if (!timer.running) {
-      let label = "Start";
-      if (isRest && timer.finished) label = "Restart";
-      else if (timerElapsedMs() > 0) label = "Resume";
-      html += `<button class="timer-btn timer-start" data-action="timerStart">${icon('check',16)} ${label}</button>`;
-    } else {
-      html += `<button class="timer-btn timer-pause" data-action="timerPause">Pause</button>`;
-    }
-    html += `<button class="timer-btn timer-reset" data-action="timerReset">Reset</button>`;
-    html += `</div></div>`;
   } else {
     if (sessions.length === 0) {
       html += `<div class="empty-history">Nothing logged yet — your first session starts the streak.</div>`;
@@ -692,6 +735,7 @@ document.addEventListener("click", (e) => {
   else if (action === "timerStart") timerStart();
   else if (action === "timerPause") timerPause();
   else if (action === "timerReset") timerReset();
+  else if (action === "toggleTimerWidget") { state.timerExpanded = !state.timerExpanded; render(); }
 });
 
 document.addEventListener("input", (e) => {
