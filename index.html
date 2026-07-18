@@ -37,8 +37,8 @@
   .dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
   .empty-note { font-size:12px; color: var(--text-faint); }
   .tabs { display:flex; gap:4px; background:var(--surface); border-radius:10px; padding:4px; margin:24px 0; }
-  .tab { flex:1; padding:10px; border:0; border-radius:8px; background:transparent; color:var(--text-dim);
-    font-size:14px; font-weight:500; cursor:pointer; }
+  .tab { flex:1; padding:9px 2px; border:0; border-radius:8px; background:transparent; color:var(--text-dim);
+    font-size:12.5px; font-weight:500; cursor:pointer; white-space:nowrap; }
   .tab.active { background:#33312A; color:var(--text); }
   .type-row { display:flex; gap:8px; margin-bottom:16px; }
   .type-btn { flex:1; padding:10px; border-radius:10px; font-size:14px; font-weight:600;
@@ -74,6 +74,27 @@
     border-radius:10px; font-size:13px; line-height:1.5; color:var(--text-dim); }
   .progression-title { font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-faint);
     margin-bottom:6px; font-weight:600; }
+
+  .timer-wrap { display:flex; flex-direction:column; align-items:stretch; }
+  .timer-mode-row { display:flex; gap:8px; margin-bottom:20px; }
+  .timer-display-box { background:var(--surface); border:1px solid var(--border); border-radius:16px;
+    padding:40px 16px; display:flex; align-items:center; justify-content:center; margin-bottom:16px;
+    transition: background .2s, border-color .2s; }
+  .timer-display-box.timer-done { border-color:#B85C3A; background:#B85C3A18; }
+  .timer-display { font-size:56px; font-weight:600; letter-spacing:1px; color:var(--text); font-variant-numeric: tabular-nums; }
+  .preset-row { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
+  .preset-btn { flex:1; min-width:56px; padding:9px 0; border-radius:8px; border:1px solid var(--border);
+    background:transparent; color:var(--text-dim); font-size:13px; font-weight:600; cursor:pointer; }
+  .preset-btn.active { border-color:#4A9E8E; background:#4A9E8E22; color:#4A9E8E; }
+  .adjust-row { display:flex; gap:8px; margin-bottom:20px; }
+  .adjust-btn { flex:1; padding:9px 0; border-radius:8px; border:1px solid var(--border); background:transparent;
+    color:var(--text-dim); font-size:13px; font-weight:600; cursor:pointer; }
+  .timer-controls { display:flex; gap:10px; }
+  .timer-btn { flex:1; padding:14px; border:0; border-radius:12px; font-weight:700; font-size:15px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; gap:8px; }
+  .timer-start { background:#4A9E8E; color:#1C1B1A; }
+  .timer-pause { background:#C9A227; color:#1C1B1A; }
+  .timer-reset { background:transparent; border:1px solid var(--border) !important; color:var(--text-dim); }
   .icon-btn { background:none; border:0; color:var(--text-faint); cursor:pointer; padding:2px; }
   .set-row { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
   .set-idx { font-size:11px; color:var(--text-faint); width:16px; }
@@ -201,6 +222,15 @@ let state = {
   editingDescId: null,
 };
 
+let timer = {
+  mode: "rest",       // "rest" | "stopwatch"
+  running: false,
+  elapsed: 0,          // ms accumulated while not running (paused/reset baseline)
+  startedAt: null,     // epoch ms when current run segment began
+  duration: 90000,     // ms, target for rest mode
+  finished: false,      // rest hit zero and hasn't been reset/restarted
+};
+
 function makeDraft(type) {
   return TYPES[type].defaults.map(d => ({ id: uid(), name: d.name, target: d.target, sets:[{weight:"",reps:""}] }));
 }
@@ -213,12 +243,146 @@ function persist() {
   }
 }
 
-function showToast() {
+function showToast(msg) {
   const t = document.getElementById("toast");
   if (!t) return;
+  if (msg) t.textContent = msg;
   t.classList.add("show");
-  setTimeout(()=>t.classList.remove("show"), 2500);
+  clearTimeout(showToast._tid);
+  showToast._tid = setTimeout(()=>{
+    t.classList.remove("show");
+    t.textContent = "Couldn't save — storage may be full or blocked.";
+  }, 2500);
 }
+
+// ---- Timer ----
+function timerElapsedMs() {
+  if (timer.running && timer.startedAt) {
+    return timer.elapsed + (Date.now() - timer.startedAt);
+  }
+  return timer.elapsed;
+}
+
+function timerRemainingMs() {
+  return Math.max(0, timer.duration - timerElapsedMs());
+}
+
+function fmtStopwatch(ms) {
+  const totalCs = Math.floor(ms / 10); // centiseconds
+  const m = Math.floor(totalCs / 6000);
+  const s = Math.floor((totalCs % 6000) / 100);
+  const cs = totalCs % 100;
+  return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}.${String(cs).padStart(2,"0")}`;
+}
+
+function fmtCountdown(ms) {
+  const totalSec = Math.ceil(ms / 1000);
+  const m = Math.floor(totalSec / 60);
+  const s = totalSec % 60;
+  return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+}
+
+function timerStart() {
+  if (timer.running) return;
+  unlockAudio();
+  if (timer.mode === "rest" && timerRemainingMs() <= 0) {
+    timer.elapsed = 0;
+    timer.finished = false;
+  }
+  timer.running = true;
+  timer.startedAt = Date.now();
+  render();
+}
+
+function timerPause() {
+  if (!timer.running) return;
+  timer.elapsed = timerElapsedMs();
+  timer.running = false;
+  timer.startedAt = null;
+  render();
+}
+
+function timerReset() {
+  timer.running = false;
+  timer.startedAt = null;
+  timer.elapsed = 0;
+  timer.finished = false;
+  render();
+}
+
+function timerSwitchMode(mode) {
+  timer.mode = mode;
+  timer.running = false;
+  timer.startedAt = null;
+  timer.elapsed = 0;
+  timer.finished = false;
+  render();
+}
+
+function timerSetDuration(ms) {
+  timer.duration = ms;
+  timer.running = false;
+  timer.startedAt = null;
+  timer.elapsed = 0;
+  timer.finished = false;
+  render();
+}
+
+function timerAdjustDuration(deltaMs) {
+  timer.duration = Math.max(5000, timer.duration + deltaMs);
+  if (!timer.running) { timer.elapsed = 0; timer.finished = false; }
+  render();
+}
+
+let audioCtx = null;
+function unlockAudio() {
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === "suspended") audioCtx.resume();
+  } catch(e) {}
+}
+
+function beep() {
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.frequency.value = 880;
+    gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.4);
+  } catch(e) {}
+}
+
+function updateTimerDisplay() {
+  // completion check runs regardless of which tab is visible
+  if (timer.mode === "rest" && timer.running && !timer.finished) {
+    const remaining = timerRemainingMs();
+    if (remaining <= 0) {
+      timer.finished = true;
+      timer.running = false;
+      timer.startedAt = null;
+      timer.elapsed = timer.duration;
+      beep();
+      if (navigator.vibrate) navigator.vibrate([200,100,200]);
+      showToast("Rest complete!");
+      render();
+      return;
+    }
+  }
+  const disp = document.getElementById("timerDisplay");
+  if (!disp) return;
+  disp.textContent = timer.mode === "stopwatch" ? fmtStopwatch(timerElapsedMs()) : fmtCountdown(timerRemainingMs());
+}
+
+setInterval(() => {
+  if (timer.running) updateTimerDisplay();
+}, 200);
+
 
 function icon(name, size=16) {
   const icons = {
@@ -250,9 +414,10 @@ function render() {
     </div>
 
     <div class="tabs">
-      <button class="tab ${state.view==='log'?'active':''}" data-action="setView" data-view="log">New session</button>
+      <button class="tab ${state.view==='log'?'active':''}" data-action="setView" data-view="log">Log</button>
       <button class="tab ${state.view==='history'?'active':''}" data-action="setView" data-view="history">History</button>
       <button class="tab ${state.view==='plan'?'active':''}" data-action="setView" data-view="plan">Plan</button>
+      <button class="tab ${state.view==='timer'?'active':''}" data-action="setView" data-view="timer">Timer</button>
     </div>
   `;
 
@@ -336,6 +501,49 @@ function render() {
       ${PROGRESSION_NOTE}
     </div>`;
     html += `</div>`;
+  } else if (state.view === "timer") {
+    const isRest = timer.mode === "rest";
+    const displayMs = isRest ? timerRemainingMs() : timerElapsedMs();
+    const displayText = isRest ? fmtCountdown(displayMs) : fmtStopwatch(displayMs);
+    const presets = [30,60,90,120,180];
+
+    html += `<div class="timer-wrap">
+      <div class="timer-mode-row">
+        <button class="type-btn" data-action="timerMode" data-mode="rest"
+          style="border-color:${isRest?'#4A9E8E':'#33312A'}; background:${isRest?'#4A9E8E22':'transparent'}; color:${isRest?'#4A9E8E':'#8A8578'}">Rest Timer</button>
+        <button class="type-btn" data-action="timerMode" data-mode="stopwatch"
+          style="border-color:${!isRest?'#4A9E8E':'#33312A'}; background:${!isRest?'#4A9E8E22':'transparent'}; color:${!isRest?'#4A9E8E':'#8A8578'}">Stopwatch</button>
+      </div>
+
+      <div class="timer-display-box ${isRest && displayMs <= 0 ? 'timer-done' : ''}">
+        <div id="timerDisplay" class="timer-display mono">${displayText}</div>
+      </div>
+    `;
+
+    if (isRest) {
+      html += `<div class="preset-row">`;
+      for (const p of presets) {
+        const active = timer.duration === p*1000;
+        html += `<button class="preset-btn ${active?'active':''}" data-action="timerPreset" data-secs="${p}">${p}s</button>`;
+      }
+      html += `</div>
+      <div class="adjust-row">
+        <button class="adjust-btn" data-action="timerAdjust" data-delta="-10000">−10s</button>
+        <button class="adjust-btn" data-action="timerAdjust" data-delta="10000">+10s</button>
+      </div>`;
+    }
+
+    html += `<div class="timer-controls">`;
+    if (!timer.running) {
+      let label = "Start";
+      if (isRest && timer.finished) label = "Restart";
+      else if (timerElapsedMs() > 0) label = "Resume";
+      html += `<button class="timer-btn timer-start" data-action="timerStart">${icon('check',16)} ${label}</button>`;
+    } else {
+      html += `<button class="timer-btn timer-pause" data-action="timerPause">Pause</button>`;
+    }
+    html += `<button class="timer-btn timer-reset" data-action="timerReset">Reset</button>`;
+    html += `</div></div>`;
   } else {
     if (sessions.length === 0) {
       html += `<div class="empty-history">Nothing logged yet — your first session starts the streak.</div>`;
@@ -478,6 +686,12 @@ document.addEventListener("click", (e) => {
     state.editingDescId = null;
     render();
   }
+  else if (action === "timerMode") timerSwitchMode(el.dataset.mode);
+  else if (action === "timerPreset") timerSetDuration(Number(el.dataset.secs) * 1000);
+  else if (action === "timerAdjust") timerAdjustDuration(Number(el.dataset.delta));
+  else if (action === "timerStart") timerStart();
+  else if (action === "timerPause") timerPause();
+  else if (action === "timerReset") timerReset();
 });
 
 document.addEventListener("input", (e) => {
